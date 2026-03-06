@@ -1,7 +1,9 @@
-import pandas as pd
-import hashlib
-import os
-import sys
+name: Clean & Anonymize GTM Data
+on:
+  push:
+    paths:
+      - 'raw_input.csv'
+  workflow_dispatch:
 
-# Find input file
-input
+jobs:
+  clean
