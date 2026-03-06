@@ -1,9 +1,10 @@
 import pandas as pd
 import hashlib
+import glob
 
-try:
-    # Read raw (handle encoding/headers)
-    df = pd.read_csv("raw_input.csv", encoding="utf-8", errors="ignore")
+# Find input file (CSV1 or raw_input.csv)
+input_file = glob.glob("*CSV1.csv") or glob.glob("raw_input.csv") or "raw_input.csv"
+print(f"Using input:
     print("Columns found:", df.columns.tolist())
     
 # 2) Keep only the relevant columns (only if exist)
