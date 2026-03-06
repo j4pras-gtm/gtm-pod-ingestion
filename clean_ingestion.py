@@ -1,10 +1,12 @@
 import pandas as pd
 import hashlib
 
-# 1) Read raw CSV from repo
-df = pd.read_csv("raw_input.csv", encoding="utf-8", errors="ignore")
-
-# 2) Keep only the relevant columns (ignore if missing)
+try:
+    # Read raw (handle encoding/headers)
+    df = pd.read_csv("raw_input.csv", encoding="utf-8", errors="ignore")
+    print("Columns found:", df.columns.tolist())
+    
+# 2) Keep only the relevant columns (only if exist)
 keep_cols = [
     "Phone",
     "SenderName",
