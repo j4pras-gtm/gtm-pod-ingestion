@@ -2,8 +2,8 @@ name: Clean & Anonymize GTM Data
 on:
   push:
     paths:
-      - 'raw_input.csv'  # Triggers only on raw CSV changes
-  workflow_dispatch:  # Manual trigger button
+      - 'raw_input.csv'
+  workflow_dispatch:
 
 jobs:
   clean:
@@ -11,26 +11,23 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
-      
+      with:
+        path: repo  # Isolate checkout
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
-        
-    - name: Install dependencies
+
+    - name: Install pandas
       run: pip install pandas
-      
-    - name: Run cleaning script
+
+    - name: Run cleaning
+      working-directory: repo  # Fix: cd to files
       run: python clean_ingestion.py
-      
-    - name: Commit clean CSV
-      run: |
-        git config user.name "GitHub Action"
-        git config user.email "action@github.com"
-        git add output_clean.csv
-        git diff --staged --quiet || git commit -m "Auto-clean: anonymized ${{ github.sha }}"
-        git push
-        
-        
-   - name: Upload clean CSV
-      uses
+
+    - name: Upload CSV
+      uses: actions/upload-artifact@v4
+      with:
+        name: output-clean
+        path: repo/output_clean.csv
